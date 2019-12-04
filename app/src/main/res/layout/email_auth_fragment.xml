@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray"
+    tools:context=".ui.auth.EmailAuthFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="48dp"
+            android:orientation="vertical" >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/auth_user_img"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_face_user" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/auth_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/auth_form_email"
+                android:textColorHint="@color/white"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusBottomStart="@dimen/box_corner_radius"
+                app:boxCornerRadiusBottomEnd="@dimen/box_corner_radius"
+                app:boxCornerRadiusTopStart="@dimen/box_corner_radius"
+                app:boxCornerRadiusTopEnd="@dimen/box_corner_radius"
+                app:boxBackgroundColor="@color/box_background"
+                app:boxStrokeColor="@color/boxStrokeColor"
+                app:errorEnabled="true" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/auth_email_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/auth_text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/auth_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:hint="@string/auth_form_password"
+                android:textColorHint="@color/white"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusBottomStart="@dimen/box_corner_radius"
+                app:boxCornerRadiusBottomEnd="@dimen/box_corner_radius"
+                app:boxCornerRadiusTopStart="@dimen/box_corner_radius"
+                app:boxCornerRadiusTopEnd="@dimen/box_corner_radius"
+                app:boxBackgroundColor="@color/box_background"
+                app:boxStrokeColor="@color/boxStrokeColor"
+                app:passwordToggleEnabled="true"
+                app:counterEnabled="true"
+                app:errorEnabled="true" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/auth_password_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/auth_text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/auth_password_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="invisible"
+                android:textColor="@color/white"
+                android:text="@string/password_reset"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/auth_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/btn_auth_bottom"
+                android:background="@drawable/auth_btn_style"
+                android:text="@string/auth_action"
+                android:textColor="@color/white"
+                android:textSize="@dimen/auth_text"
+                android:enabled="false"/>
+
+            <ProgressBar
+                android:id="@+id/auth_progressbar"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

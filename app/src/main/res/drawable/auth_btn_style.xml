@@ -1,0 +1,14 @@
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <solid
+        android:color="@color/sign_in" />
+
+    <stroke
+        android:width="2dp"
+        android:color="@color/gray" />
+
+    <corners
+        android:radius="@dimen/box_corner_radius" />
+</shape>
