@@ -30,8 +30,4 @@ class AuthViewModel : ViewModel() {
 
         }
     }
-
-    fun setSuccessEmailResult() {
-        _authResult.value = AuthResult.Success("")
-    }
 }
