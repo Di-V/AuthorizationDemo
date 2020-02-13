@@ -1,38 +1,46 @@
 package app.di_v.authdemo.ui.auth
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import app.di_v.authdemo.R
 import app.di_v.authdemo.data.model.FormType
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.email_auth_fragment.view.*
+import kotlinx.android.synthetic.main.email_auth_fragment.*
 
-class EmailAuthFragment : Fragment() {
+class EmailAuthFragment : DialogFragment() {
 
     companion object {
-        fun newInstance() = EmailAuthFragment()
+        fun newInstance(supportFragmentManager: FragmentManager): EmailAuthFragment {
+            val dialog = EmailAuthFragment()
+            dialog.show(supportFragmentManager, "auth dialog")
+            return dialog
+        }
     }
 
-    private lateinit var viewModel: AuthViewModel
-    private lateinit var emailForm: TextInputLayout
-    private lateinit var passwordForm: TextInputLayout
-    private lateinit var emailEditText: TextInputEditText
-    private lateinit var passwordEditText: TextInputEditText
-    private lateinit var btn: Button
-    private lateinit var progress: ProgressBar
-    private lateinit var TYPE: FormType
+    override fun onStart() {
+        super.onStart()
+        val mDialog = dialog
+        if(mDialog != null) {
+            val size = ViewGroup.LayoutParams.MATCH_PARENT
+            mDialog.window!!.setLayout(size, size)
+            mDialog.window!!.setWindowAnimations(R.style.AppTheme_Slide)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.email_auth_fragment, container, false)
@@ -41,63 +49,51 @@ class EmailAuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        emailForm = view.findViewById(R.id.auth_email_layout)
-        passwordForm = view.findViewById(R.id.auth_password_layout)
-        emailEditText = view.findViewById(R.id.auth_email_edit_text)
-        passwordEditText = view.findViewById(R.id.auth_password_edit_text)
-        btn = view.auth_btn
-        progress = view.auth_progressbar
+        val viewModel = ViewModelProvider(this).get(EmailAuthViewModel::class.java)
+
+        viewModel.formState.observe(viewLifecycleOwner, Observer { formState ->
+            auth_email_layout.error = formState.emailError?.let { getString(it) }
+            auth_password_layout.error = formState.passwordError?.let { getString(it) }
+            loading(formState.loading)
+            when (formState.type) {
+                FormType.NEXT -> setForm(R.string.auth_action_next, null, View.VISIBLE, View.GONE, View.INVISIBLE)
+                FormType.LOGIN -> setForm(R.string.auth_action_login, auth_email_edit_text.text, View.GONE, View.VISIBLE, View.VISIBLE)
+                FormType.REGISTER -> setForm(R.string.auth_action_create,auth_email_edit_text.text, View.GONE, View.VISIBLE, View.VISIBLE)
+                FormType.SUCCESS -> activity!!.finish()
+            }
+        })
+
+        auth_toolbar.setNavigationOnClickListener {
+            dismiss()
+        }
+
+        auth_btn.setOnClickListener {
+            viewModel.action(email = auth_email_edit_text.text.toString(),
+                password = auth_password_edit_text.text.toString())
+        }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
-        TYPE = viewModel.authenticatedResultLiveData.value?.type ?: FormType.NEXT
-
-        when (TYPE) {
-            FormType.NEXT -> btn.text = getString(R.string.auth_action_next)
-            FormType.LOGIN -> btn.text = getString(R.string.auth_action_login)
-            FormType.REGISTER -> btn.text = getString(R.string.auth_action_create)
+    private fun loading(load: Boolean) {
+        if (load) {
+            auth_btn.visibility = View.GONE
+            auth_progressbar.visibility = View.VISIBLE
+        } else {
+            auth_btn.visibility = View.VISIBLE
+            auth_progressbar.visibility = View.GONE
         }
+    }
 
-        btn.setOnClickListener {
-            btn.visibility = View.GONE
-            progress.visibility = View.VISIBLE
-            when(TYPE) {
-                FormType.NEXT -> viewModel.verificationEmail(emailEditText.text.toString())
-                FormType.LOGIN -> viewModel.signInWithEmail(emailEditText.text.toString(), passwordEditText.text.toString())
-                FormType.REGISTER -> viewModel.createUserWithEmail(emailEditText.text.toString(), passwordEditText.text.toString())
-            }
-
-        }
-
-        viewModel.authenticatedResultLiveData.observe(this, Observer { data ->
-            TYPE = data.type
-
-            when (data.type) {
-                FormType.NEXT -> btn.text = getString(R.string.auth_action_next)
-                FormType.LOGIN -> btn.text = getString(R.string.auth_action_login)
-                FormType.REGISTER -> btn.text = getString(R.string.auth_action_create)
-            }
-            emailForm.isEnabled = false
-            passwordForm.visibility = View.VISIBLE
-            progress.visibility = View.GONE
-            btn.isEnabled = true
-            btn.visibility = View.VISIBLE
-        })
-
-        viewModel.formState.observe(this, Observer { formState ->
-            emailForm.error = formState.emailError?.let { it1 -> getString(it1) }
-            passwordForm.error = formState.passwordError?.let { it1 -> getString(it1) }
-            btn.isEnabled = formState.isDataValid
-        })
-
-        emailEditText.doAfterTextChanged { email ->
-            viewModel.isEmailValid(email.toString())
-        }
-
-        passwordEditText.doAfterTextChanged { password ->
-            viewModel.isPasswordValid(password.toString())
-        }
+    private fun setForm(
+        btnText: Int,
+        infoText: Editable?,
+        emailVisibility: Int,
+        passwordVisibility: Int,
+        passwordResetVisibility: Int
+    ) {
+        auth_btn.text = getString(btnText)
+        auth_info.text = infoText
+        auth_email_layout.visibility = emailVisibility
+        auth_password_layout.visibility = passwordVisibility
+        auth_password_reset.visibility = passwordResetVisibility
     }
 }

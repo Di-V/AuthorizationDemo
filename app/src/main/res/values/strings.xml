@@ -4,7 +4,7 @@
     <!-- Auth screen start -->
     <string name="auth_form_email">Email</string>
     <string name="auth_form_password">Password</string>
-    <string name="auth_action">Mail and password</string>
+    <string name="auth_with_mail">Sign in with Mail</string>
     <string name="auth_action_next">Next</string>
     <string name="auth_action_login">Log in</string>
     <string name="auth_action_create">Register</string>
@@ -12,6 +12,14 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="password_reset">Forgot your password?</string>
+    <string name="sign_out">sign out</string>
+    <string name="google_auth_exception">Authorisation Error</string>
+    <string name="firebase_exception">Authorisation Error</string>
+    <string name="email_exception">The email address is badly formatted</string>
+    <string name="invalid_credentials_exception">Wrong password</string>
+    <string name="exception">unknown error</string>
+    <string name="too_many_requests_exception">Too many unsuccessful login attempts. Please try again later.</string>
+    <string name="auth_with_google">Sign in with Google</string>
     <!-- Auth screen end -->
 
 </resources>

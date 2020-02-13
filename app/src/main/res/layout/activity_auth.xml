@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:background="@color/dark_gray"
+    tools:context=".ui.auth.AuthActivity">
+
+    <Button
+        android:id="@+id/auth_btn_sign_in_google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:paddingLeft="8dp"
+        android:drawableLeft="@drawable/ic_btn_google_light_normal"
+        android:background="@drawable/btn_white_style"
+        android:text="@string/auth_with_google"/>
+
+    <Button
+        android:id="@+id/auth_btn_sign_in_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/btn_white_style"
+        android:drawableLeft="@drawable/ic_mail_black_24dp"
+        android:paddingLeft="18dp"
+        android:text="@string/auth_with_mail" />
+
+</LinearLayout>
