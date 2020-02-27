@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#263238</color>
+    <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#FFFFFF</color>
 
     <color name="white">#FFFFFF</color>
     <color name="light_green">#78DC96</color>
-    <color name="black">#000000</color>
     <color name="dark_gray">#263238</color>
     <color name="gray">#30FFFFFF</color>
-    <color name="boxStrokeColor">#78DC96</color>
-    <color name="box_background">#30FFFFFF</color>
-    <color name="btn_auth_email">#78DC96</color>
 </resources>

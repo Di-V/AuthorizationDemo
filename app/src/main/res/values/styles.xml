@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -21,6 +20,16 @@
     <style name="AppTheme.Slide">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <style name="AppTheme.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/light_green</item>
+        <item name="boxBackgroundColor">@color/gray</item>
+        <item name="hintTextColor">@color/white</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/box_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/box_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/box_corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/box_corner_radius</item>
     </style>
 
 </resources>

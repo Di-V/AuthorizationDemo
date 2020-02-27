@@ -1,7 +1,6 @@
 package app.di_v.authdemo.ui.auth
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -2,7 +2,6 @@ package app.di_v.authdemo.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import app.di_v.authdemo.R
 import app.di_v.authdemo.ui.auth.AuthActivity
@@ -12,17 +11,23 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity: AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
+    private val authRequestCode = 7
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         if (auth.currentUser != null) {
-            textView.text = auth.currentUser!!.email
-            btn_auth_action.text = getString(R.string.sign_out)
-            btn_auth_action.setOnClickListener {
+            auth.currentUser!!.email?.let { updateUi(it,  getString(R.string.sign_out)) }
+        } else {
+            updateUi("need to login","authorization")
+        }
+
+        btn_auth_action.setOnClickListener {
+            if (auth.currentUser != null) {
                 auth.signOut()
 
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -33,16 +38,23 @@ class MainActivity: AppCompatActivity() {
                 val googleSignInClient = GoogleSignIn.getClient(this, gso)
 
                 googleSignInClient.signOut().addOnCompleteListener(this) {
-                    textView.text = "sign out success!"
-                    this.recreate()
+                    updateUi("sign out success!", "authorization")
                 }
-            }
-        } else {
-            textView.text = "need to login"
-            btn_auth_action.text = "authorization"
-            btn_auth_action.setOnClickListener {
-                startActivityForResult(Intent(this, AuthActivity::class.java), 7)
+            } else {
+                startActivityForResult(Intent(this, AuthActivity::class.java), authRequestCode)
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            authRequestCode -> auth.currentUser!!.email?.let { updateUi(it, getString(R.string.sign_out)) }
+        }
+    }
+
+    private fun updateUi(text: String, textBtn: String) {
+        textView.text = text
+        btn_auth_action.text = textBtn
     }
 }

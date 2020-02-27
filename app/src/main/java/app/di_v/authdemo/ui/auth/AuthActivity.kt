@@ -1,8 +1,8 @@
 package app.di_v.authdemo.ui.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import app.di_v.authdemo.R
@@ -55,7 +55,6 @@ class AuthActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
             RC_SIGN_IN -> viewModel.signInWithGoogle(data)
-            else -> null
         }
     }
 }
